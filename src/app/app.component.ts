@@ -438,11 +438,15 @@ export class AppComponent implements OnInit {
   }
 
   leseFrage(): void {
+    // gibt ein string array zurück, mit allen keys, damit man die Länge ermitteln und nach keys per index suchen kann
     const keys: string[] = Object.keys(this.alleFragen);
     let next: number = this.alteFrage;
     this.keyLaenge = keys.length;
+    // ist notwendig, weil sonst bei einer länge von 2 (also im vorletzten Durchlauf) die Schleife niemals enden würde
     if ( this.keyLaenge > 2) {
+      // damit nicht die gleiche Frage nochmal kommt und der Benutzer denkt, es passiert nichts
       while (next === this.alteFrage) {
+        // berechnet zufälligen Index aller noch übrigen Fragen, um dem Benutzer eine Zufällige Frage zu präsentieren
         next = Math.floor(Math.random() *  this.keyLaenge - 1) + 1;
       }
     } else {
@@ -458,6 +462,7 @@ export class AppComponent implements OnInit {
     this.leseFrage();
     document.getElementById('frage').innerHTML = `<p>${this.frage}</p>`;
     document.getElementById('lösung').innerHTML = `<p>${this.alleFragen[this.frage]}</p>`;
+    // this.frage ist undefined, wenn keine Frage mehr übrig ist, also hat der Benutzer alle Fragen korrekt beantwortet
     if (this.frage === undefined) {
       document.open();
       document.write('<h1>Gratulation, du hast das Quiz erfolgreich beendet, wenn du erneut spielen möchtest, drücke F5</h1>');
